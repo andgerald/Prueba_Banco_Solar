@@ -8,5 +8,6 @@ router.get("/", usuariosController.findAll);
 router.post("/", usuariosController.create);
 //usuario DELETE: Recibe el id de un usuario registrado y lo elimina
 router.delete("/", usuariosController.remove);
-
+//usuario PUT: Recibe los datos modificados de un usuario registrado y los actualiza
+router.put("/", usuariosController.update);
 export default router;
