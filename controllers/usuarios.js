@@ -23,7 +23,18 @@ const create = async (req, res) => {
   }
 };
 
+const remove = async (req, res) => {
+  const { id } = req.query;
+  try {
+    const result = await usuariosModel.remove(id);
+    return res.json(result);
+  } catch (e) {
+    return e;
+  }
+};
+
 export const usuariosController = {
   findAll,
   create,
+  remove,
 };
