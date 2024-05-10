@@ -9,6 +9,21 @@ const findAll = async (req, res) => {
   }
 };
 
+const create = async (req, res) => {
+  const { nombre, balance } = req.body;
+  const newUsuario = {
+    nombre,
+    balance,
+  };
+  try {
+    const result = await usuariosModel.create(newUsuario);
+    return res.json(result);
+  } catch (e) {
+    return e;
+  }
+};
+
 export const usuariosController = {
   findAll,
+  create,
 };
