@@ -2,6 +2,7 @@ import express from "express";
 import "dotenv/config";
 import path from "path";
 import usuariosRoute from "./routes/usuariosRoute.js";
+import transferenciasRoute from "./routes/transferenciasRoute.js";
 
 const { SERVER_PORT } = process.env;
 const __dirname = path.resolve();
@@ -11,6 +12,7 @@ app.use(express.json());
 
 app.use("/usuario", usuariosRoute);
 app.use("/usuarios", usuariosRoute);
+app.use("/transferencias", transferenciasRoute);
 
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/index.html");
