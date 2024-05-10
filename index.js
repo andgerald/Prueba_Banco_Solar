@@ -13,6 +13,7 @@ app.use(express.json());
 app.use("/usuario", usuariosRoute);
 app.use("/usuarios", usuariosRoute);
 app.use("/transferencias", transferenciasRoute);
+app.use("/transferencia", transferenciasRoute);
 
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/index.html");
