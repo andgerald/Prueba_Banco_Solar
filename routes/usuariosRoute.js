@@ -4,5 +4,6 @@ import { Router } from "express";
 const router = Router();
 /// GET: Devuelve la aplicación cliente disponible en el apoyo de la prueba
 router.get("/", usuariosController.findAll);
+router.post("/", usuariosController.create);
 
 export default router;
