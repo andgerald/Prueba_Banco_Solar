@@ -1,6 +1,5 @@
 import "dotenv/config";
 import pool from "../database/dbConfig.js";
-import { response } from "express";
 
 //usuarios GET: Devuelve todos los usuarios registrados con sus balances.
 const findAll = async () => {
@@ -25,6 +24,7 @@ const create = async (usuario) => {
   }
 };
 
+//usuario DELETE: Recibe el id de un usuario registrado y lo elimina
 const remove = async (id) => {
   try {
     const result = await pool.query(
@@ -37,10 +37,22 @@ const remove = async (id) => {
   }
 };
 
-//usuario DELETE: Recibe el id de un usuario registrado y lo elimina
+const update = async (nombre, balance, id) => {
+  try {
+    const result = await pool.query(
+      "UPDATE usuarios SET nombre=$1, balance=$2 WHERE id=$3 RETURNING *",
+      [nombre, balance, id]
+    );
+
+    return result.rows[0];
+  } catch (e) {
+    return e;
+  }
+};
 
 export const usuariosModel = {
   findAll,
   create,
   remove,
+  update,
 };
