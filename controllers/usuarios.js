@@ -1,11 +1,19 @@
 import { usuariosModel } from "../models/usuarios.js";
+import { getDataBaseError } from "../lib/errors/databaseErrors.js";
 
 const findAll = async (req, res) => {
   try {
     const result = await usuariosModel.findAll();
-    res.json(result);
-  } catch (e) {
-    console.log(e);
+    res.json({
+      message: "Listado de usuarios",
+      result,
+    });
+  } catch (error) {
+    if (error.code) {
+      const { code, message } = getDataBaseError(error.code);
+      res.status(code).json({ message });
+    }
+    res.status(500).json({ message: "Internal server error" });
   }
 };
 
