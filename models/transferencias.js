@@ -17,30 +17,34 @@ const findAll = async () => {
 const create = async (transferencia) => {
   try {
     await pool.query("BEGIN");
+    //encuentro al emisor
     const emisorQuery = await pool.query(
       "SELECT id FROM usuarios WHERE nombre = $1",
       [transferencia.emisor]
     );
-
+    //encuentro al receptor
     const receptorQuery = await pool.query(
       "SELECT id FROM usuarios WHERE nombre = $1",
       [transferencia.receptor]
     );
 
+    //saco los id
     const emisorId = emisorQuery.rows[0].id;
     const receptorId = receptorQuery.rows[0].id;
-    // Realizar la transferencia: descontar del emisor y agregar al receptor
+
+    // descontar del emisor y agregar al receptor
     const resta = await pool.query(
       "UPDATE usuarios SET balance = balance - $1 WHERE nombre = $2 RETURNING *",
       [transferencia.monto, transferencia.emisor]
     );
     resta.rows[0];
+    // agregar al receptor el valor
     const suma = await pool.query(
       "UPDATE usuarios SET balance = balance + $1 WHERE nombre = $2 RETURNING *",
       [transferencia.monto, transferencia.receptor]
     );
     suma.rows[0];
-
+    // se crea la transferencia
     const result = await pool.query(
       "INSERT INTO transferencias (emisor, receptor, monto, fecha) VALUES ($1, $2, $3, CURRENT_TIMESTAMP) RETURNING *",
       [emisorId, receptorId, transferencia.monto]
